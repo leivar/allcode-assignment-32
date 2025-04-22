@@ -1,0 +1,20 @@
+datasource db {
+  provider = "sqlite"
+  url = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Tasks {
+  id          Int      @id @default(autoincrement())
+  content     String
+}
+
+model ShoppingList {
+  id          Int      @id @default(autoincrement())
+  title       String
+  quantity    Int
+  location    String
+}
