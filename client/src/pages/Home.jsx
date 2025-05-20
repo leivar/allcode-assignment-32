@@ -1,7 +1,7 @@
 import Easy from "./Easy";
 import Medium from "./Medium";
 import Hard from "./Hard";
-import Navbar from "../components/Navbar";
+import Navbar from "../lib/components/navbar";
 
 export default function Home() {
 

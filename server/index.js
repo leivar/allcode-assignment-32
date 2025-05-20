@@ -34,7 +34,7 @@ app.get('/shopping-list', async (req, res) => {
 app.post('/add-task', async (req, res) => {
   const task = req.body;
   
-  if(content === ''){
+  if(task.content === ''){
     res.send({error: 'Empty task can not be added.'});
   }else{
     try {

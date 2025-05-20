@@ -10,7 +10,7 @@ export default function Medium(){
   const [ formData, setFormData ] = useState("");
   
   const newTask = useMutation({
-    mutationFn: () => addTask({ content: formData }),
+    mutationFn: () => addTask({content: formData}),
     onSuccess: () => queryClient.refetchQueries(getTasks)
   });
   
@@ -38,15 +38,14 @@ export default function Medium(){
     <section id="medium-task" className="m-2 p-2 flex flex-col" >
       <p className="flex text-2xl">Medium Task</p>
       
-      <section id="medium-task-content" className="flex mt-2">
+      <section id="medium-task-content" className="flex flex-col mt-2">
         <form>
           <input onChange={(e) => setFormData(e.target.value)} value={formData} placeholder='Enter new task' className="p-2 border-1 border-emerald-400 rounded-xl" />
-          
           <label className="flex bg-emerald-500 p-2 hover:bg-emerald-400 rounded-xl w-[13.3rem]">Add Task
             <button type="button" onClick={() => handleOnClick()} />
           </label>
         </form>
-        <section id="medium-status" className="flex">
+        <section id="medium-status" className="flex w-[13.3rem]">
           {statusError?
             <p className="p-2 bg-red-500 rounded-xl">{statusError}</p>
             :null

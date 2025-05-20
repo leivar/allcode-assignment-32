@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-export default function Navbar() {
+export default function navbar() {
 
   return(
     <nav className="bg-emerald-500 p-4 rounded-b-xl">

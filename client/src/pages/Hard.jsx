@@ -1,11 +1,11 @@
 import { useContext } from "react";
-import HardAddItem from "../components/HardAddItem";
-import HardViewList from "../components/HardViewList";
-import EditContext from "../lib/context/EditContext";
+import HardAddItem from "../lib/components/hardAddItem";
+import HardViewList from "../lib/components/hardViewList";
+import editContext from "../lib/context/editContext";
 
 export default function Hard(){
 
-  const [isEdit, setIsEdit] = useContext(EditContext);
+  const [isEdit, setIsEdit] = useContext(editContext);
   
   return(
     <section id="hard-task" className="mt-2 p-2">

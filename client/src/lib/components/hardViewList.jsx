@@ -1,34 +1,41 @@
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
-import { getShoppingList } from "../lib/queries/getShoppingList";
+import { getShoppingList } from "../queries/getShoppingList";
 import { useContext, useState, useRef, useEffect } from "react";
-import EditContext from "../lib/context/EditContext";
-import { editShoppingListItem } from "../lib/mutations/editShoppingListItem";
-import { deleteShoppingListItem } from "../lib/mutations/deleteShoppingListItem";
+import editContext from "../context/editContext";
+import { editShoppingListItem } from "../mutations/editShoppingListItem";
+import { deleteShoppingListItem } from "../mutations/deleteShoppingListItem";
 
-export default function HardViewList(){
+export default function hardViewList(){
 
-  let ref = useRef(null);
+  const ref = useRef(null);
   const queryClient = useQueryClient();
-  const [ isEdit, setIsEdit ] = useContext(EditContext);
+  const [ isEdit, setIsEdit ] = useContext(editContext);
   const [ editValue, setEditValue ] = useState(NaN);
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['items'],
     queryFn: getShoppingList
   });
+
   useEffect(() => {
     setHardError('');
     setHardSuccess('');
-  },[data])
+  },[data]);
+
   const [ hardError, setHardError ] = useState('');
   const [ hardSuccess, setHardSuccess ] = useState('');
-  const itemId = (index) => {  return `Hard-item-${index}` }
+
+  const itemId = (index) => {  
+    return `Hard-item-${index}` 
+  };
+
   const initialFormData = {
     title: null,
     quantity: null,
     location: null,
     id: null
-  }
+  };
   const [ formData, setFormData ] = useState(initialFormData);
+  
   const updateList = (formData) => {
     if(formData.tilte || formData.title === ''){
       setHardError("Title can not be empty");
@@ -37,9 +44,11 @@ export default function HardViewList(){
       handleOnClickEditConfirm();
     }
   };
+
   const handleOnClickEditConfirm = () => {
     editItem.mutate();
   };
+
   const handleOnClickEdit = (e, title, quantity, location, id) => {
     setIsEdit(true);
     setHardError('');
@@ -50,38 +59,45 @@ export default function HardViewList(){
       quantity: quantity,
       location: location,
       id: id
-    })
+    });
     setEditValue(e.target.value);
   };
+
   const handleOnClickDelete = (id) => {
     setHardError('');
     setHardSuccess('');
     ref.current = id;
     deleteItem.mutate();
   };
+
   const handleOnClickCancel = () => {
     setHardError('');
     setHardSuccess('');
     setHardSuccess('');
     setIsEdit(false);
   };
+
   const queryOnSuccessEdit = () => {
     setIsEdit(false);
     queryClient.refetchQueries(getShoppingList);
     setHardSuccess(`Task ${formData.id} successfully updated to ${formData.title}` )
   };
+
   const queryOnSuccessDelete = () => {
     queryClient.refetchQueries(getShoppingList);
     setHardSuccess('Task deleted successfully.');
-  }
+  };
+
   const editItem = useMutation({
     mutationFn: () => editShoppingListItem(formData),
     onSuccess: () => queryOnSuccessEdit()
   });
+
   const deleteItem = useMutation({
     mutationFn: () => deleteShoppingListItem(ref.current),
     onSuccess: () => queryOnSuccessDelete()
   });
+
   if(isLoading){
     return(
       <section id='hard-loading' className="flex flex-col m-2 p-2">
@@ -121,7 +137,7 @@ export default function HardViewList(){
   );
 
   const editView = (editValue) =>
-    <>
+    <section id="hard-edit-view">
       <li className="grid grid-cols-5">
         <textarea 
           className="grid-1"
@@ -156,7 +172,7 @@ export default function HardViewList(){
           onClick={() => handleOnClickCancel()}
         >Cancel</button>
       </li>
-    </>
+    </section>
 
   return(
     <section id="hard-view" className="flex-col">
